@@ -7,7 +7,7 @@ Read the conversation only — do not re-run work or start anything new. Output 
 
 1. **One sentence** recapping the session (what we did / where we landed). Same brevity as a `/recap`.
 2. A line stating the count: **"N open loops:"** (or **"No open loops."** if zero).
-3. If N > 0, a bullet list — one line per loop, what it is + next action.
+3. If N > 0, a numbered list (1., 2., 3., …) — one line per loop, what it is + next action.
 
 Count and list anything not fully closed; only include items that genuinely apply:
 - started but unfinished, or stubbed / mocked / `TODO` / `FIXME`
