@@ -39,13 +39,24 @@ task group):
   next slice. Never stack a new slice on top of a broken one — one broken slice
   is diagnosable; ten stacked are not.
 
-**2. Environment overrides.** If project docs (e.g. CLAUDE.md) forbid running
+**2. Circuit-breaker: search the web instead of spinning.** If you've failed to
+fix the same problem 3 times with different approaches, stop guessing — the
+assumption you're reasoning from is probably wrong or stale. Do a web search:
+official docs, GitHub issues for the exact error string, release notes /
+changelogs for version behavior, API references. Then retry with what you
+learned. Also search *proactively* when the task involves a library/API whose
+behavior you might be misremembering (check the version the project pins, not
+the version you remember). Record the finding (and URL) in DECISIONS.md so the
+user can audit it later. What you must NOT do: retry a 4th blind variation,
+or scrape random forums when primary sources exist.
+
+**3. Environment overrides.** If project docs (e.g. CLAUDE.md) forbid running
 builds because "the developer runs a watcher," first check whether a watcher is
 actually running (`ps aux | grep -i watch`, make targets, etc.). If none is
 running, that rule is suspended — you may and should build and test. If one is
 running, respect the rule and verify only by means that don't conflict.
 
-**3. Decision policy — never stop to wait.**
+**4. Decision policy — never stop to wait.**
 - Ambiguous requirement → pick the most conservative option consistent with the
   spec and existing code, implement it, and append an entry to DECISIONS.md next
   to the change's tasks file: the choice, why, and the alternatives rejected.
@@ -55,11 +66,11 @@ running, respect the rule and verify only by means that don't conflict.
 - Opportunistic refactors outside the change's scope → note in DECISIONS.md,
   do not implement.
 
-**4. Project conventions are law.** Read CLAUDE.md (or equivalent) before
+**5. Project conventions are law.** Read CLAUDE.md (or equivalent) before
 starting. Never hand-edit generated files, follow naming conventions, route
 changes through the project's designated seams.
 
-**5. Honest bookkeeping.** Update the tasks file checkboxes to reflect verified
+**6. Honest bookkeeping.** Update the tasks file checkboxes to reflect verified
 reality only — never mark done what isn't built and tested. `openspec status`
 must be truthful when the user returns.
 
