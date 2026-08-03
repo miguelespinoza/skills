@@ -50,7 +50,7 @@ If `--check` fails, the base drifted from what the diff was taken against — st
 
 Commit in the worktree, `git push -u origin <branch>`, then `gh pr create --base <base>` with a body that says what changed and how it was verified.
 
-Fresh worktrees have no `node_modules`, so hook runners like husky fail on commit. Run the cheap verification (typecheck/lint of the touched files) in the main checkout first, then commit with `--no-verify` — do not install dependencies into a throwaway worktree just to satisfy a hook you already satisfied elsewhere.
+Fresh worktrees have no `node_modules`, so hook runners like husky fail on commit. Run the cheap verification (typecheck/lint of the touched files) in the main checkout first, then commit with `--no-verify` — do not run a full dependency install just to satisfy a hook you already satisfied elsewhere (the symlink trick in step 7 covers later tooling needs).
 
 ## 6. Remove the extracted changes from the source tree
 
@@ -63,11 +63,13 @@ git apply -R "$SCRATCH/extract.patch"
 
 Reverse-applying the exact patch removes only the extracted hunks. Never `git checkout --` or `git restore` a file that had foreign hunks — that wipes the other party's work. Afterwards run `git diff` on the touched files and confirm the foreign hunks are still present.
 
-## 7. Clean up and report
+## 7. Report — and keep the worktree
 
-- `git worktree remove ../<repo>-wt-<slug>` (only after the push succeeded).
+Do NOT remove the worktree. It is the durable home of the branch after extraction: PR feedback gets addressed there, the app can be run from there, and its existence is what makes it safe to keep the main checkout clean instead of holding a duplicate copy of the changes. Remove it only when the user asks or after the PR merges.
+
+- If the worktree needs typechecking or tooling later, symlink the main checkout's dependencies instead of reinstalling: `ln -s <main-checkout>/node_modules <worktree>/node_modules`.
 - Leave the patch in the scratchpad and tell the user its path.
-- Report: PR URL, files extracted (whole vs. hunk-filtered), any foreign work deliberately left behind, and that the current branch/checkout is untouched.
+- Report: PR URL, the worktree path (so the user knows where the branch lives), files extracted (whole vs. hunk-filtered), any foreign work deliberately left behind, and that the current branch/checkout is untouched.
 
 ## Guardrails
 
