@@ -7,6 +7,7 @@ My personal [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skills
 | Skill | What it does |
 | --- | --- |
 | [`away`](./away) | Autonomous OpenSpec apply while you're out: vertical slices, e2e-verified per slice, decisions logged instead of questions, return notes when you're back. Run `/away <change>`. |
+| [`extract-pr`](./extract-pr) | Move this chat session's changes onto a fresh branch and open a PR — without committing to or switching the current branch. Figures out the session's files itself and extracts only its own hunks when parallel agents touched the same files. Run `/extract-pr` in Claude Code or `$extract-pr` in Codex. |
 | [`wrapup`](./wrapup) | One-sentence session recap plus a counted list of open loops (unfinished, unverified, or deferred work). Run `/wrapup`. |
 
 ## Install
