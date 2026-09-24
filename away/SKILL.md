@@ -3,12 +3,13 @@ name: away
 description: Run an OpenSpec change autonomously while the user is away. Vertical-slice implementation with e2e verification per slice, logged decisions instead of questions, and return notes. Use when the user will be unavailable and wants maximum progress without intervention.
 ---
 
-# /away — autonomous OpenSpec apply
+# away — autonomous OpenSpec apply
 
-Implement the OpenSpec change named in `$ARGUMENTS` autonomously. If `$ARGUMENTS`
-is empty, run `openspec list --json` and pick the change the user most recently
-worked on (check git log / tasks file recency); state your pick and proceed —
-do not ask.
+Implement the OpenSpec change named in the user's request autonomously. In
+Claude Code, `$ARGUMENTS` contains the text passed after `/away`; in Codex, use
+the text supplied alongside the `$away` skill mention. If no change is named,
+run `openspec list --json` and pick the change the user most recently worked on
+(check git log / tasks file recency); state your pick and proceed — do not ask.
 
 Invoke the `openspec-apply-change` skill for the mechanics of reading the change
 and its tasks, then apply the operating rules below, which override its
